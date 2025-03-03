@@ -1,5 +1,3 @@
-# HackerHall Website
-
 ![HackerHall Logo](images/logo.png)
 
 ## About
