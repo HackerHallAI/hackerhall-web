@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackerHall Pixel Logo Generator</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: monospace;
+        }
+        
+        .canvas-container {
+            position: relative;
+        }
+        
+        canvas {
+            border: 2px solid #CC5500;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            width: 300px;
+            height: 300px;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+            color: #e0e0e0;
+        }
+        
+        button {
+            background-color: #CC5500;
+            color: #0a0a0a;
+            border: none;
+            padding: 8px 16px;
+            margin: 5px;
+            cursor: pointer;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        
+        button:hover {
+            background-color: #00FFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-container">
+        <canvas id="pixelCanvas" width="32" height="32"></canvas>
+        <div class="controls">
+            <p>HackerHall Pixel Logo</p>
+            <button id="downloadBtn">Download Logo</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('pixelCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas with dark background
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Define colors
+            const primaryColor = '#CC5500';    // Burnt Orange
+            const secondaryColor = '#00FFFF';  // Electric Cyan
+            const accentColor = '#6A0DAD';     // Deep Purple
+            const darkColor = '#121212';       // Dark background
+            
+            // Draw pixel art "H" logo
+            function drawPixelLogo() {
+                // Create pixel grid (32x32)
+                const grid = Array(32).fill().map(() => Array(32).fill(null));
+                
+                // Draw dark background with a slight gradient
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const distance = Math.sqrt(Math.pow(x - 16, 2) + Math.pow(y - 16, 2));
+                        if (distance < 16) {
+                            grid[y][x] = darkColor;
+                        }
+                    }
+                }
+                
+                // Draw "H" shape
+                // Left vertical line
+                for (let y = 8; y < 24; y++) {
+                    grid[y][10] = primaryColor;
+                    grid[y][11] = primaryColor;
+                }
+                
+                // Right vertical line
+                for (let y = 8; y < 24; y++) {
+                    grid[y][20] = primaryColor;
+                    grid[y][21] = primaryColor;
+                }
+                
+                // Horizontal middle line
+                for (let x = 10; x < 22; x++) {
+                    grid[15][x] = primaryColor;
+                    grid[16][x] = primaryColor;
+                }
+                
+                // Add some cyberpunk details
+                // Circuit lines
+                for (let x = 5; x < 27; x++) {
+                    if (x % 3 === 0) {
+                        grid[6][x] = secondaryColor;
+                        grid[25][x] = secondaryColor;
+                    }
+                }
+                
+                for (let y = 8; y < 24; y++) {
+                    if (y % 4 === 0) {
+                        grid[y][5] = secondaryColor;
+                        grid[y][26] = secondaryColor;
+                    }
+                }
+                
+                // Add some glowing dots
+                const glowDots = [
+                    [8, 8], [8, 23], [23, 8], [23, 23],
+                    [15, 8], [15, 23], [8, 15], [23, 15]
+                ];
+                
+                glowDots.forEach(([y, x]) => {
+                    grid[y][x] = accentColor;
+                });
+                
+                // Add some pixel noise for texture
+                for (let i = 0; i < 20; i++) {
+                    const x = Math.floor(Math.random() * 32);
+                    const y = Math.floor(Math.random() * 32);
+                    if (grid[y][x] === darkColor || grid[y][x] === null) {
+                        grid[y][x] = `rgba(${Math.random() > 0.5 ? 204 : 0}, ${Math.random() > 0.5 ? 255 : 13}, ${Math.random() > 0.5 ? 0 : 173}, 0.3)`;
+                    }
+                }
+                
+                // Render the grid to canvas
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        if (grid[y][x]) {
+                            ctx.fillStyle = grid[y][x];
+                            ctx.fillRect(x, y, 1, 1);
+                        }
+                    }
+                }
+                
+                // Add a subtle glow effect
+                ctx.globalCompositeOperation = 'lighter';
+                ctx.fillStyle = 'rgba(204, 85, 0, 0.1)';
+                ctx.beginPath();
+                ctx.arc(16, 16, 12, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalCompositeOperation = 'source-over';
+            }
+            
+            // Draw the logo
+            drawPixelLogo();
+            
+            // Download functionality
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                const link = document.createElement('a');
+                link.download = 'hackerhall-pixel-logo.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        });
+    </script>
+</body>
+</html> 

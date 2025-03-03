@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackerHall - AI-Powered Coding Without the BS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <div class="terminal-button close"></div>
+                <div class="terminal-button minimize"></div>
+                <div class="terminal-button maximize"></div>
+            </div>
+            <div class="terminal-title">root@hackerhall:~#</div>
+        </div>
+        
+        <div class="terminal-content">
+            <header>
+                <div class="logo-container">
+                    <div class="logo">
+                        <pre class="ascii-art">
+ _   _            _             _   _       _ _ 
+| | | | __ _  ___| | _____ _ __| | | | __ _| | |
+| |_| |/ _` |/ __| |/ / _ \ '__| |_| |/ _` | | |
+|  _  | (_| | (__|   <  __/ |  |  _  | (_| | | |
+|_| |_|\__,_|\___|_|\_\___|_|  |_| |_|\__,_|_|_|
+                                                
+                        </pre>
+                    </div>
+                    <p class="tagline">AI-Powered Coding Without the BS</p>
+                </div>
+                
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="#about" class="nav-link">./about</a></li>
+                        <li><a href="#projects" class="nav-link">./ai-projects</a></li>
+                        <li><a href="#games" class="nav-link">./games</a></li>
+                        <li><a href="#contact" class="nav-link">./contact</a></li>
+                        <li><a href="https://hacker-hall.beehiiv.com/" target="_blank" class="nav-link">./newsletter</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link dropdown-toggle">./tools</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="tools/ascii-logo-generator.html" target="_blank">ASCII Logo Generator</a></li>
+                                <li><a href="tools/pixel-logo-generator.html" target="_blank">Pixel Logo Generator</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+            
+            <main>
+                <section id="hero">
+                    <div class="typing-container">
+                        <div class="typing-text">
+                            <span class="prompt">root@hackerhall:~# </span>
+                            <span class="typed-text"></span>
+                            <span class="cursor">|</span>
+                        </div>
+                    </div>
+                    <div class="hero-content">
+                        <div class="pixel-avatar"></div>
+                        <div class="hero-text">
+                            <h2>Welcome to <span class="highlight">HackerHall</span></h2>
+                            <p>A content-driven brand dedicated to AI-powered coding, automation, open-source development, and AI-driven game development.</p>
+                            <div class="cta-buttons">
+                                <a href="#projects" class="cta-button">Explore Projects</a>
+                                <a href="https://beehiiv.com/hackerhall" target="_blank" class="cta-button secondary">Subscribe</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="about">
+                    <h2 class="section-title"><span class="prompt">root@hackerhall:~# </span>cat about.txt</h2>
+                    <div class="section-content">
+                        <div class="about-text">
+                            <p>HackerHall exists to <span class="highlight">empower mid-to-advanced developers</span> to build AI-driven applications, automation scripts, micro-SaaS tools, and innovative AI-powered games.</p>
+                            <p>Instead of passive learning, we promote <span class="highlight">a builder's mentality</span> where you actively create, experiment, and push the boundaries of AI.</p>
+                            <p>Our focus is on <span class="highlight">practical AI applications, automation tools, and real-world coding projects</span>, emphasizing a hacker-first, non-corporate mindset.</p>
+                        </div>
+                        <div class="core-pillars">
+                            <h3>Core Content Pillars:</h3>
+                            <ul class="pillar-list">
+                                <li><span class="highlight">Project-Based AI Tutorials</span> – Hands-on builds with practical applications</li>
+                                <li><span class="highlight">Storytelling & Case Studies</span> – Deep dives into AI in business and automation</li>
+                                <li><span class="highlight">Open-Source AI & Tools</span> – Exploring free and self-hostable AI models</li>
+                                <li><span class="highlight">Automation & Micro-SaaS</span> – Using AI to build profitable applications</li>
+                                <li><span class="highlight">Hacker Tools & Environments</span> – Showcasing AI-powered coding tools</li>
+                                <li><span class="highlight">AI & Game Development</span> – Building AI-powered games and systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="projects">
+                    <h2 class="section-title"><span class="prompt">root@hackerhall:~# </span>ls -la ./ai-projects</h2>
+                    <div class="projects-grid">
+                        <div class="project-card">
+                            <div class="project-icon"><i class="fas fa-robot"></i></div>
+                            <h3>AI Personal Podcast Host</h3>
+                            <p>Build your own AI-powered podcast host with customizable personality</p>
+                            <a href="https://github.com/HackerHallAI/custom_pod/blob/main/README.md" class="project-link">View Project</a>
+                        </div>
+                        <div class="project-card">
+                            <div class="project-icon"><i class="fas fa-terminal"></i></div>
+                            <h3>Ollama Dev Environment</h3>
+                            <p>Setting up a complete open-source AI development environment</p>
+                            <a href="https://github.com/HackerHallAI/ollama-deepseek" class="project-link">View Project</a>
+                        </div>
+                        <div class="project-card coming-soon">
+                            <div class="project-icon"><i class="fas fa-chart-line"></i></div>
+                            <h3>AI Trading Algorithm</h3>
+                            <p>A deep dive into building and testing an AI-powered trading system</p>
+                            <span class="coming-soon-tag">Coming Soon</span>
+                        </div>
+                        <div class="project-card coming-soon">
+                            <div class="project-icon"><i class="fas fa-code"></i></div>
+                            <h3>VS Code AI Extension</h3>
+                            <p>Building a custom AI-powered extension for Visual Studio Code</p>
+                            <span class="coming-soon-tag">Coming Soon</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="games">
+                    <h2 class="section-title"><span class="prompt">root@hackerhall:~# </span>ls -la ./games</h2>
+                    <div class="games-grid">
+                        <div class="game-card">
+                            <div class="game-preview zombie-apocalypse"></div>
+                            <h3>AI Zombie Apocalypse</h3>
+                            <p>You control an AI robot fighting against zombie hordes.</p>
+                            <a href="https://hackerhallai.github.io/AI-zombie-apocalypse/" class="game-link">Play Now</a>
+                        </div>
+                        <div class="game-card coming-soon">
+                            <div class="game-preview neural-racer"></div>
+                            <h3>Neural Network Racer</h3>
+                            <p>Train AI agents to race through procedural tracks</p>
+                            <span class="coming-soon-tag">Coming Soon</span>
+                        </div>
+                        <div class="game-card coming-soon">
+                            <div class="game-preview hacker-defense"></div>
+                            <h3>Hacker Defense</h3>
+                            <p>Tower defense with AI-powered adversaries</p>
+                            <span class="coming-soon-tag">Coming Soon</span>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="contact">
+                    <h2 class="section-title"><span class="prompt">root@hackerhall:~# </span>./contact.sh</h2>
+                    <div class="contact-content">
+                        <div class="contact-text">
+                            <p>Want to collaborate or have questions? Reach out through any of these channels:</p>
+                            <p class="email"><span class="highlight">Email:</span> <a href="mailto:root@hackerhall.ai">root@hackerhall.ai</a></p>
+                        </div>
+                        <div class="social-links">
+                            <a href="https://discordapp.com/users/1303022238077026439" target="_blank" class="social-link discord">
+                                <i class="fab fa-discord"></i>
+                                <span>Discord</span>
+                            </a>
+                            <a href="https://x.com/HackerHallAI" target="_blank" class="social-link twitter">
+                                <i class="fab fa-x-twitter"></i>
+                                <span>X</span>
+                            </a>
+                            <a href="https://www.instagram.com/hackerhallai/" target="_blank" class="social-link instagram">
+                                <i class="fab fa-instagram"></i>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="https://www.youtube.com/channel/UCdT_XWU5kNuFRhUUfD0oJOg" target="_blank" class="social-link youtube">
+                                <i class="fab fa-youtube"></i>
+                                <span>YouTube</span>
+                            </a>
+                            <a href="https://www.reddit.com/user/HackerHallAI/" target="_blank" class="social-link reddit">
+                                <i class="fab fa-reddit"></i>
+                                <span>Reddit</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            
+            <footer>
+                <div class="footer-content">
+                    <p>&copy; <span id="current-year"></span> HackerHall | AI-Powered Coding Without the BS</p>
+                    <p class="terminal-line"><span class="prompt">root@hackerhall:~# </span>exit</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+    <div id="subscribeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close-modal">&times;</span>
+                <h3><span class="prompt">root@hackerhall:~# </span>./subscribe.sh</h3>
+            </div>
+            <div class="modal-body">
+                <iframe src="https://embeds.beehiiv.com/5119ff20-92f7-4b65-a250-4f1818ca0a1e" data-test-id="beehiiv-embed" width="100%" height="320" frameborder="0" scrolling="no" style="border-radius: 4px; border: 2px solid #e5e7eb; margin: 0; background-color: transparent;"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

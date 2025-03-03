@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackerHall ASCII Art Generator</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: #CC5500;
+            text-shadow: 0 0 5px #CC5500;
+            margin-bottom: 2rem;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .ascii-container {
+            background-color: #121212;
+            border: 1px solid #CC5500;
+            border-radius: 4px;
+            padding: 1.5rem;
+            width: 100%;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 15px rgba(204, 85, 0, 0.3);
+            overflow-x: auto;
+        }
+        
+        .ascii-art {
+            white-space: pre;
+            font-family: monospace;
+            color: #CC5500;
+            text-shadow: 0 0 3px #CC5500;
+            font-size: 14px;
+            line-height: 1;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        label {
+            font-weight: bold;
+            color: #00FFFF;
+        }
+        
+        select, input {
+            background-color: #121212;
+            color: #e0e0e0;
+            border: 1px solid #CC5500;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        button {
+            background-color: #121212;
+            color: #00FFFF;
+            border: 1px solid #00FFFF;
+            padding: 0.8rem 1.5rem;
+            font-family: monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        button:hover {
+            background-color: #00FFFF;
+            color: #0a0a0a;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        
+        .color-preview {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            border: 1px solid #333;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+        
+        .custom-text-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        textarea {
+            background-color: #121212;
+            color: #e0e0e0;
+            border: 1px solid #CC5500;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .code-container {
+            background-color: #121212;
+            border: 1px solid #00FFFF;
+            border-radius: 4px;
+            padding: 1rem;
+            width: 100%;
+            margin-top: 2rem;
+            position: relative;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #00FFFF;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+        
+        .copy-btn:hover {
+            text-decoration: underline;
+        }
+        
+        code {
+            display: block;
+            white-space: pre-wrap;
+            color: #e0e0e0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <h1>HackerHall ASCII Art Generator</h1>
+    
+    <div class="container">
+        <div class="ascii-container">
+            <pre class="ascii-art" id="asciiOutput">
+ _   _            _             _   _       _ _ 
+| | | | __ _  ___| | _____ _ __| | | | __ _| | |
+| |_| |/ _` |/ __| |/ / _ \ '__| |_| |/ _` | | |
+|  _  | (_| | (__|   <  __/ |  |  _  | (_| | | |
+|_| |_|\__,_|\___|_|\\_\\___|_|  |_| |_|\__,_|_|_|
+            </pre>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="logoType">Logo Type:</label>
+                <select id="logoType">
+                    <option value="hackerhall">HackerHall</option>
+                    <option value="h">H Letter</option>
+                    <option value="custom">Custom Text</option>
+                </select>
+            </div>
+            
+            <div class="custom-text-container" id="customTextContainer" style="display: none;">
+                <label for="customText">Custom Text:</label>
+                <textarea id="customText" placeholder="Enter your text here..."></textarea>
+            </div>
+            
+            <div class="control-group">
+                <label for="fontSize">Font Size:</label>
+                <select id="fontSize">
+                    <option value="small">Small</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="large">Large</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="fontStyle">Font Style:</label>
+                <select id="fontStyle">
+                    <option value="standard">Standard</option>
+                    <option value="block">Block</option>
+                    <option value="shadow">Shadow</option>
+                    <option value="slant">Slant</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="textColor">Text Color: <span class="color-preview" id="colorPreview" style="background-color: #CC5500;"></span></label>
+                <input type="color" id="textColor" value="#CC5500">
+            </div>
+            
+            <div class="button-group">
+                <button id="generateBtn">Generate ASCII Art</button>
+                <button id="copyBtn">Copy to Clipboard</button>
+            </div>
+        </div>
+        
+        <div class="code-container">
+            <div class="code-header">
+                <span>HTML Code:</span>
+                <button class="copy-btn" id="copyHtmlBtn">Copy HTML</button>
+            </div>
+            <code id="htmlCode"></code>
+        </div>
+        
+        <div class="code-container">
+            <div class="code-header">
+                <span>CSS Code:</span>
+                <button class="copy-btn" id="copyCssBtn">Copy CSS</button>
+            </div>
+            <code id="cssCode"></code>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const asciiOutput = document.getElementById('asciiOutput');
+            const logoTypeSelect = document.getElementById('logoType');
+            const fontSizeSelect = document.getElementById('fontSize');
+            const fontStyleSelect = document.getElementById('fontStyle');
+            const textColorInput = document.getElementById('textColor');
+            const colorPreview = document.getElementById('colorPreview');
+            const generateBtn = document.getElementById('generateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+            const copyCssBtn = document.getElementById('copyCssBtn');
+            const htmlCode = document.getElementById('htmlCode');
+            const cssCode = document.getElementById('cssCode');
+            const customTextContainer = document.getElementById('customTextContainer');
+            const customText = document.getElementById('customText');
+            
+            // ASCII art templates
+            const asciiTemplates = {
+                hackerhall: {
+                    standard: ` _   _            _             _   _       _ _ 
+| | | | __ _  ___| | _____ _ __| | | | __ _| | |
+| |_| |/ _\` |/ __| |/ / _ \\ '__| |_| |/ _\` | | |
+|  _  | (_| | (__|   <  __/ |  |  _  | (_| | | |
+|_| |_|\\__,_|\\___|_|\\_\\___|_|  |_| |_|\\__,_|_|_|`,
+                    block: `
+ _    _     _    _     _    _    _____   _____    _    _     _    _       _       
+| |  | |   / \\  | |   | |  | |  |  ___| |  ___|  | |  | |   / \\  | |     | |      
+| |__| |  / _ \\ | |__ | |__| |  | |__   | |__    | |__| |  / _ \\ | |     | |      
+|  __  | / ___ \\|  __||  __  |  |  __|  |  __|   |  __  | / ___ \\| |     | |      
+|_|  |_|/_/   \\_\\_|   |_|  |_|  |_|     |_|      |_|  |_|/_/   \\_\\_|____ |_|____`,
+                    shadow: `
+ |_   _|            |             |_   _|       | | 
+   | | | __ _  ___| | _____ _ __  | | | __ _| | |
+   | | |/ _\` |/ __| |/ / _ \\ '__| | | |/ _\` | | |
+   | | | (_| | (__|   <  __/ |    | | | (_| | | |
+   |_| |\\__,_|\\___|_|\\_\\___|_|    |_| |\\__,_|_|_|`,
+                    slant: `
+    __  __           __             __  __      __ __ 
+   / / / /___ ______/ /_____  _____/ / / /___ _/ // /
+  / /_/ / __ \`/ ___/ //_/ _ \\/ ___/ /_/ / __ \`/ // / 
+ / __  / /_/ / /__/ ,< /  __/ /  / __  / /_/ /__  /  
+/_/ /_/\\__,_/\\___/_/|_|\\___/_/  /_/ /_/\\__,_/  /_/   `
+                },
+                h: {
+                    standard: ` _   _ 
+| | | |
+| |_| |
+|  _  |
+|_| |_|`,
+                    block: `
+ _    _ 
+| |  | |
+| |__| |
+|  __  |
+|_|  |_|`,
+                    shadow: `
+ |_   _|
+   | | 
+   | | 
+   | | 
+   |_| `,
+                    slant: `
+    __  __
+   / / / /
+  / /_/ / 
+ / __  /  
+/_/ /_/   `
+                }
+            };
+            
+            // Update color preview when color input changes
+            textColorInput.addEventListener('input', function() {
+                colorPreview.style.backgroundColor = this.value;
+            });
+            
+            // Toggle custom text input visibility
+            logoTypeSelect.addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    customTextContainer.style.display = 'flex';
+                } else {
+                    customTextContainer.style.display = 'none';
+                }
+            });
+            
+            // Generate ASCII art
+            function generateAsciiArt() {
+                const logoType = logoTypeSelect.value;
+                const fontStyle = fontStyleSelect.value;
+                const fontSize = fontSizeSelect.value;
+                const textColor = textColorInput.value;
+                
+                let asciiArt = '';
+                
+                if (logoType === 'custom') {
+                    // For custom text, we'll use a simple conversion
+                    asciiArt = convertToAsciiArt(customText.value, fontStyle);
+                } else {
+                    // Use predefined templates
+                    asciiArt = asciiTemplates[logoType][fontStyle];
+                }
+                
+                // Apply font size
+                let fontSizeClass = '';
+                switch (fontSize) {
+                    case 'small':
+                        fontSizeClass = 'font-size: 10px;';
+                        break;
+                    case 'medium':
+                        fontSizeClass = 'font-size: 14px;';
+                        break;
+                    case 'large':
+                        fontSizeClass = 'font-size: 18px;';
+                        break;
+                }
+                
+                // Update the display
+                asciiOutput.textContent = asciiArt;
+                asciiOutput.style.color = textColor;
+                asciiOutput.style.textShadow = `0 0 3px ${textColor}`;
+                asciiOutput.style.fontSize = fontSizeClass.split(': ')[1].replace(';', '');
+                
+                // Generate HTML and CSS code
+                generateCode(asciiArt, textColor, fontSizeClass);
+            }
+            
+            // Convert custom text to ASCII art (simple version)
+            function convertToAsciiArt(text, style) {
+                // This is a simplified version - for a real implementation,
+                // you would need a more sophisticated ASCII art conversion library
+                if (style === 'standard') {
+                    return text.toUpperCase();
+                } else if (style === 'block') {
+                    return text.split('').join(' ').toUpperCase();
+                } else if (style === 'shadow') {
+                    return '  ' + text.toUpperCase() + '\n' + 
+                           ' ' + text.toLowerCase();
+                } else if (style === 'slant') {
+                    return '  /' + text.toUpperCase() + '/\n' + 
+                           ' / ' + text.toLowerCase() + '/ \n' + 
+                           '/_____/';
+                }
+                return text;
+            }
+            
+            // Generate HTML and CSS code
+            function generateCode(asciiArt, textColor, fontSizeClass) {
+                const htmlTemplate = `<pre class="ascii-art">
+${asciiArt}
+</pre>`;
+                
+                const cssTemplate = `.ascii-art {
+    white-space: pre;
+    font-family: monospace;
+    color: ${textColor};
+    text-shadow: 0 0 3px ${textColor};
+    ${fontSizeClass}
+    line-height: 1;
+}`;
+                
+                htmlCode.textContent = htmlTemplate;
+                cssCode.textContent = cssTemplate;
+            }
+            
+            // Copy to clipboard function
+            function copyToClipboard(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+            
+            // Event listeners
+            generateBtn.addEventListener('click', generateAsciiArt);
+            
+            copyBtn.addEventListener('click', function() {
+                copyToClipboard(asciiOutput.textContent);
+                alert('ASCII art copied to clipboard!');
+            });
+            
+            copyHtmlBtn.addEventListener('click', function() {
+                copyToClipboard(htmlCode.textContent);
+                alert('HTML code copied to clipboard!');
+            });
+            
+            copyCssBtn.addEventListener('click', function() {
+                copyToClipboard(cssCode.textContent);
+                alert('CSS code copied to clipboard!');
+            });
+            
+            // Initialize
+            generateAsciiArt();
+        });
+    </script>
+</body>
+</html> 
