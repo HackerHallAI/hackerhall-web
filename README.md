@@ -1,6 +1,6 @@
 # HackerHall Website
 
-![HackerHall Logo](images/pixel-avatar.png)
+![HackerHall Logo](images/logo.png)
 
 ## About
 
@@ -86,3 +86,5 @@ For questions or collaboration opportunities, reach out through:
 - Email: [root@hackerhall.ai](mailto:root@hackerhall.ai)
 - Discord: [Join our community](https://discordapp.com/users/1303022238077026439)
 - Twitter/X: [@HackerHallAI](https://x.com/HackerHallAI)
+
+![HackerHall Logo](images/pixel-avatar.png)
