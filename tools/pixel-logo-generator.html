@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackerHall Pixel Logo Generator</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: #CC5500;
+            text-shadow: 0 0 5px #CC5500;
+            margin-bottom: 2rem;
+        }
+        
+        .canvas-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        canvas {
+            border: 2px solid #CC5500;
+            box-shadow: 0 0 15px rgba(204, 85, 0, 0.5);
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        button {
+            background-color: #121212;
+            color: #00FFFF;
+            border: 1px solid #00FFFF;
+            padding: 0.8rem 1.5rem;
+            font-family: monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #00FFFF;
+            color: #0a0a0a;
+            box-shadow: 0 0 10px #00FFFF;
+        }
+        
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            border: 1px dashed #CC5500;
+            margin-bottom: 2rem;
+        }
+        
+        .upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .upload-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #CC5500;
+        }
+        
+        input[type="file"] {
+            display: none;
+        }
+        
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+        }
+        
+        .preview-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .preview {
+            border: 1px solid #333;
+            margin: 0 1rem;
+        }
+        
+        .design-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            justify-content: center;
+        }
+        
+        .design-option {
+            padding: 0.5rem 1rem;
+            border: 1px solid #CC5500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .design-option.active {
+            background-color: #CC5500;
+            color: #0a0a0a;
+        }
+        
+        .effect-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>HackerHall Pixel Logo Generator</h1>
+    
+    <div class="upload-container">
+        <label class="upload-label">
+            <div class="upload-icon">⬆️</div>
+            <span>Upload your logo image</span>
+            <input type="file" id="imageUpload" accept="image/*">
+        </label>
+        <p>Or use one of the default HackerHall pixel designs</p>
+    </div>
+    
+    <div class="design-selector">
+        <div class="design-option" data-design="hooded">Hooded Figure</div>
+        <div class="design-option" data-design="h-logo">H Logo</div>
+        <div class="design-option" data-design="topdown">Top-Down Character</div>
+        <div class="design-option active" data-design="custom">Custom Logo</div>
+    </div>
+    
+    <div class="canvas-container">
+        <canvas id="pixelCanvas" width="320" height="320"></canvas>
+    </div>
+    
+    <div class="controls">
+        <div class="options">
+            <div class="option-group">
+                <label for="pixelSize">Pixel Size:</label>
+                <input type="range" id="pixelSize" min="1" max="16" value="10">
+            </div>
+            
+            <div class="option-group">
+                <label for="colorScheme">Color Scheme:</label>
+                <select id="colorScheme">
+                    <option value="hackerhall">HackerHall (Orange/Cyan)</option>
+                    <option value="cyberpunk">Cyberpunk (Yellow/Pink)</option>
+                    <option value="matrix">Matrix (Green/Black)</option>
+                    <option value="retro">Retro (Purple/Blue)</option>
+                    <option value="original">Original Colors</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="effect-options">
+            <div class="checkbox-group">
+                <input type="checkbox" id="addNoise" checked>
+                <label for="addNoise">Add Pixel Noise</label>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="addGlow" checked>
+                <label for="addGlow">Add Glow Effect</label>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="addCircuits">
+                <label for="addCircuits">Add Circuit Lines</label>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button id="generateBtn">Regenerate Logo</button>
+            <button id="downloadBtn">Download Logo</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('pixelCanvas');
+            const ctx = canvas.getContext('2d');
+            const pixelSizeSlider = document.getElementById('pixelSize');
+            const colorSchemeSelect = document.getElementById('colorScheme');
+            const generateBtn = document.getElementById('generateBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const imageUpload = document.getElementById('imageUpload');
+            const designOptions = document.querySelectorAll('.design-option');
+            const addNoiseCheckbox = document.getElementById('addNoise');
+            const addGlowCheckbox = document.getElementById('addGlow');
+            const addCircuitsCheckbox = document.getElementById('addCircuits');
+            
+            // Color schemes
+            const colorSchemes = {
+                hackerhall: {
+                    background: '#0a0a0a',
+                    dark: '#121212',
+                    primary: '#CC5500',    // Burnt Orange
+                    secondary: '#00FFFF',  // Electric Cyan
+                    accent: '#6A0DAD',     // Deep Purple
+                },
+                cyberpunk: {
+                    background: '#0a0a0a',
+                    dark: '#121212',
+                    primary: '#f3e600',    // Yellow
+                    secondary: '#ff00ff',  // Pink
+                    accent: '#00ffcc',     // Teal
+                },
+                matrix: {
+                    background: '#000000',
+                    dark: '#050505',
+                    primary: '#00ff00',    // Green
+                    secondary: '#00cc00',  // Darker Green
+                    accent: '#99ff99',     // Light Green
+                },
+                retro: {
+                    background: '#120458',
+                    dark: '#0b0326',
+                    primary: '#7b2cbf',    // Purple
+                    secondary: '#c77dff',  // Light Purple
+                    accent: '#31e6e6',     // Cyan
+                },
+                original: {
+                    background: '#0a0a0a',
+                    dark: '#121212',
+                    // These will be ignored for original color mode
+                    primary: '#ffffff',
+                    secondary: '#ffffff',
+                    accent: '#ffffff',
+                }
+            };
+            
+            let pixelSize = parseInt(pixelSizeSlider.value);
+            let colorScheme = colorSchemes[colorSchemeSelect.value];
+            let uploadedImage = null;
+            let currentDesign = 'custom';
+            
+            // Default custom logo (purple heart-like shape)
+            const defaultCustomLogo = new Image();
+            defaultCustomLogo.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH5QwDEjcvEKm3eQAABRdJREFUWMPtl1tsFFUYx3/nzOzsbLvb7bZbWmgvtBQoLRSBgEiUAEJEQUATMIgxUSMaE6MJ8YFo9MFofDDRxMQYb4kxGhIfiKIJGhQvgFxEpFwKtKXQbbvd7V52d3Zmzxwf2gW7pduCPuCXTDKZc77v/5/vfOecGfgfDwn+QdO0Zs/zVgAtwHwhxCQhRJkQQgEGgR7XdY8opQ4opfYqpbpyDa6U+kspdbTQpLTWjwP3AiuBxUAjEAZGgD7gHPAb8BXwlVLqUiGAWmvleV5LIQCt9QbgCWAVUJXnkgHgB+Aj4EOl1Ll8E9NaB4UQXiEAWuuXgGeB6QUmHuAk8DbwllLKzjcxIcT4AGitFwFvALcVmvQa9AJ7gGeUUr/nA5BSjg9Aa/0q8BRQMo7kAXqAF5RSb+YDIKUcG0BrPRt4D5g3zuQDdAHrlFKHcwFIKXMDaK3nA18Ds8aZfIBO4E6l1JlsAFLK7ABa6wbgIFBfYPI2cAHoADqAU8BxpdRAhvgm4Dul1JRsAFLKzABa6zLgEFBXQPLngY+BXcA+pdRQjvhq4BdgRiaAXAuRaQu+TiHJHwPWK6WOFpD8NOBLMmxDLoC0FWitHwA+KyDxvcBapdTFAsbMAz4HFo0FkLYCWuuZwBGgMkfCl4HdwE7gG6XUuQKTD/AgsGMsgLQV0FrvAe7OEtMPbAW2KaX6C0w4E8QJYKFSKpkOkLYCWuuVZE9+K7BYKXV/ockrpWKxWCwWjUZjsVgsHo/HE4lEIplMJpPJZDKVSqVSqVQq5TiO4ziO4ziO67qu67qu53me53me53me7/u+7/tKKaWUUkIIIYQQQggppZRSSillGIZhGIZhGKZpmqZpmqZpWZZlWZZlWXYoFAqFQqFQOBwOh8PhcCQSiUQikUhlZWVlZWVlZVVVVVVVVVV1dXV1dXV1dW1tbW1tbW3t1KlTp06dOnXatGnTpk2bNn369OnTp0+fMWPGjBkzZsyYOXPmzJkzZ86aNWvWrFmzZs2ePXv27NmzZ8+ZM2fOnDlz5syff/7555/jBUhbAa31JuDNLDFvAU8qpVIFJh/gELBEKZXMBpC2AlrrCuAPoC5L3CZgSyEQWuv7gPezxXieV5IJIOMKKKViwKYcsTuBzQUkfwfwTo6YTVrrWCaAjAAASqmdwLYccVuBR/NJXmsdBj4AQjnCtgE7MwJkOQVrgLM54l4GHlFK+WMlr7UWwHZgfY7QTmCBUirjSZgVQCl1CbgL6M0R+hzwmta6JEfcI8DjOWJ6gbuUUpcyBmU7hrXWJcAOYG2O8UaBZ4FtSikng7cG2A3MzTH2CPCQUmpPNoCsAABa6xrgU2BJjvFGgA+BXUqpA1rrSuAJYCMwI8eYSeAx4J1sWzAWQABSC7wCPJTH+EngZ6ADOK2UimutyxndjvnAYqA5j/HbgReVUv25AvMCCEC01vcDLwDL8rxkPOgHXgW2KqVG8rkgb4AAJJjQKmADsBxoAKYAVYx+Pw4AfcBZ4CiwB/hMKXU+n7H/BfwNGpLw3Vx2aioAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjEtMTItMDNUMTg6NTU6NDcrMDA6MDBXtCiAAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDIxLTEyLTAzVDE4OjU1OjQ3KzAwOjAwJumQPAAAAABJRU5ErkJggg==';
+            
+            // Initialize canvas
+            function initCanvas() {
+                canvas.width = 32 * pixelSize;
+                canvas.height = 32 * pixelSize;
+                ctx.fillStyle = colorScheme.background;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            
+            // Generate custom logo from the image you shared
+            function generateCustomLogo() {
+                initCanvas();
+                
+                // If no uploaded image, use the default custom logo
+                const imageToUse = uploadedImage || defaultCustomLogo;
+                
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                
+                // Set to 32x32 pixels for pixelation
+                tempCanvas.width = 32;
+                tempCanvas.height = 32;
+                
+                // Draw and resize the image to 32x32
+                tempCtx.drawImage(imageToUse, 0, 0, 32, 32);
+                
+                // Get the pixel data
+                const imageData = tempCtx.getImageData(0, 0, 32, 32);
+                const data = imageData.data;
+                
+                // Process each pixel
+                for (let y = 0; y < 32; y++) {
+                    for (let x = 0; x < 32; x++) {
+                        const index = (y * 32 + x) * 4;
+                        const r = data[index];
+                        const g = data[index + 1];
+                        const b = data[index + 2];
+                        const a = data[index + 3];
+                        
+                        if (a < 50) continue; // Skip transparent pixels
+                        
+                        // Apply color scheme or keep original colors
+                        let color;
+                        if (colorSchemeSelect.value === 'original') {
+                            color = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+                        } else {
+                            const brightness = (r + g + b) / 3;
+                            
+                            if (brightness < 85) {
+                                color = colorScheme.dark;
+                            } else if (brightness < 170) {
+                                color = colorScheme.primary;
+                            } else {
+                                color = colorScheme.secondary;
+                            }
+                        }
+                        
+                        // Draw the pixel
+                        ctx.fillStyle = color;
+                        ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                    }
+                }
+                
+                // Add optional effects
+                if (addNoiseCheckbox.checked) {
+                    addPixelNoise();
+                }
+                
+                if (addGlowCheckbox.checked) {
+                    addGlowEffect();
+                }
+                
+                if (addCircuitsCheckbox.checked) {
+                    addCircuitLines();
+                }
+            }
+            
+            // Add pixel noise for texture
+            function addPixelNoise() {
+                for (let i = 0; i < 20; i++) {
+                    const x = Math.floor(Math.random() * 32);
+                    const y = Math.floor(Math.random() * 32);
+                    
+                    // Check if pixel is already drawn
+                    const pixelData = ctx.getImageData(x * pixelSize, y * pixelSize, 1, 1).data;
+                    if (pixelData[3] < 50) { // If transparent
+                        const alpha = Math.random() * 0.2; // Reduced alpha for subtlety
+                        const colorChoice = Math.random();
+                        let color;
+                        
+                        if (colorSchemeSelect.value === 'original') {
+                            // Use purple/pink tones for noise in original mode
+                            const r = Math.floor(Math.random() * 100) + 155;
+                            const g = Math.floor(Math.random() * 50);
+                            const b = Math.floor(Math.random() * 100) + 155;
+                            color = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+                        } else {
+                            if (colorChoice < 0.33) {
+                                color = `rgba(${hexToRgb(colorScheme.primary)}, ${alpha})`;
+                            } else if (colorChoice < 0.66) {
+                                color = `rgba(${hexToRgb(colorScheme.secondary)}, ${alpha})`;
+                            } else {
+                                color = `rgba(${hexToRgb(colorScheme.accent)}, ${alpha})`;
+                            }
+                        }
+                        
+                        ctx.fillStyle = color;
+                        ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                    }
+                }
+            }
+            
+            // Add glow effect
+            function addGlowEffect() {
+                ctx.globalCompositeOperation = 'lighter';
+                
+                if (colorSchemeSelect.value === 'original') {
+                    // Purple glow for original mode
+                    ctx.fillStyle = 'rgba(180, 100, 255, 0.1)';
+                } else {
+                    ctx.fillStyle = `rgba(${hexToRgb(colorScheme.primary)}, 0.1)`;
+                }
+                
+                ctx.beginPath();
+                ctx.arc(16 * pixelSize, 16 * pixelSize, 12 * pixelSize, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.globalCompositeOperation = 'source-over';
+            }
+            
+            // Add circuit lines
+            function addCircuitLines() {
+                if (colorSchemeSelect.value === 'original') {
+                    ctx.fillStyle = 'rgba(0, 255, 255, 0.5)'; // Cyan for original mode
+                } else {
+                    ctx.fillStyle = colorScheme.secondary;
+                }
+                
+                // Add fewer circuit lines (more subtle)
+                for (let y = 0; y < 32; y += 8) {
+                    for (let x = 0; x < 32; x += 4) {
+                        if (Math.random() > 0.8) { // Reduced probability
+                            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                        }
+                    }
+                }
+                
+                for (let x = 0; x < 32; x += 8) {
+                    for (let y = 0; y < 32; y += 4) {
+                        if (Math.random() > 0.8) { // Reduced probability
+                            ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                        }
+                    }
+                }
+            }
+            
+            // Generate logo based on current design
+            function generateLogo() {
+                if (currentDesign === 'custom') {
+                    generateCustomLogo();
+                } else if (currentDesign === 'topdown') {
+                    generateTopDownCharacter();
+                } else if (currentDesign === 'hooded') {
+                    generateHoodedFigure();
+                } else {
+                    generateHLogo();
+                }
+            }
+            
+            // Helper function to convert hex to rgb
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? 
+                    parseInt(result[1], 16) + ',' + 
+                    parseInt(result[2], 16) + ',' + 
+                    parseInt(result[3], 16) 
+                    : '0,0,0';
+            }
+            
+            // Event listeners
+            pixelSizeSlider.addEventListener('input', function() {
+                pixelSize = parseInt(this.value);
+                generateLogo();
+            });
+            
+            colorSchemeSelect.addEventListener('change', function() {
+                colorScheme = colorSchemes[this.value];
+                generateLogo();
+            });
+            
+            generateBtn.addEventListener('click', function() {
+                generateLogo();
+            });
+            
+            downloadBtn.addEventListener('click', function() {
+                const link = document.createElement('a');
+                link.download = 'hackerhall-pixel-logo.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+            
+            imageUpload.addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        uploadedImage = new Image();
+                        uploadedImage.onload = function() {
+                            // Automatically switch to custom design when uploading
+                            designOptions.forEach(opt => opt.classList.remove('active'));
+                            document.querySelector('[data-design="custom"]').classList.add('active');
+                            currentDesign = 'custom';
+                            generateCustomLogo();
+                        };
+                        uploadedImage.src = event.target.result;
+                    };
+                    
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            });
+            
+            // Effect checkboxes
+            addNoiseCheckbox.addEventListener('change', generateLogo);
+            addGlowCheckbox.addEventListener('change', generateLogo);
+            addCircuitsCheckbox.addEventListener('change', generateLogo);
+            
+            // Design selector
+            designOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    designOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    currentDesign = this.dataset.design;
+                    generateLogo();
+                });
+            });
+            
+            // Initialize with custom logo
+            generateCustomLogo();
+        });
+    </script>
+</body>
+</html> 
